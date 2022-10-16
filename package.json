@@ -1,0 +1,21 @@
+{
+  "name": "breadinator",
+  "version": "1.0.0",
+  "description": "improved reconstruction of breadzilla, using mern stack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ManuelRemer/Breadinator.git"
+  },
+  "keywords": [],
+  "author": "Manuel Remer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ManuelRemer/Breadinator/issues"
+  },
+  "homepage": "https://github.com/ManuelRemer/Breadinator#readme"
+}
