@@ -4,7 +4,7 @@ const connectionString =
   "mongodb+srv://Manuel:buchlade@cluster0.rxeek.mongodb.net/Breadinator?retryWrites=true&w=majority";
 
 const connectToDB = async (url) => {
-  await mongoose.connect(connectionString);
+  await mongoose.connect(url);
 };
 
 // mongoose
