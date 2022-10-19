@@ -5,8 +5,16 @@ const errorHandler = (err, req, res, next) => {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     msg: err.message || "Something went wrong, try again later",
   };
-  console.log("handler: ", customError);
-  res.status(customError.statusCode).json(customError.msg);
+
+  if (err.name === "CastError") {
+    customError = {
+      statusCode: StatusCodes.BAD_REQUEST,
+      msg: `can't find ${err.kind} with ${err.value}`,
+      type: "no such entry in db",
+    };
+  }
+  console.log("handler: ", err);
+  res.status(customError.statusCode).json(customError);
 };
 
 module.exports = errorHandler;
