@@ -1,16 +1,25 @@
+// require packages
 require("dotenv").config();
 require("express-async-errors");
 
+// require framework
 const express = require("express");
 const app = express();
-const port = 3000;
+
 const connectToDB = require("./connect");
-const errorHandler = require("./middleware/error_handler_MW");
-const notFound = require("./middleware/not_found_MW");
+// require mw
+const errorHandler = require("./middleware/errors/error_handler_MW");
+const notFound = require("./middleware/errors/not_found_MW");
+
+// require routes
 const router = require("./routes/recipeRoutes");
 
-// middelware
+//--------------------------------------------------------
 
+// globals
+const port = 3000;
+
+// middleware
 app.use(express.json());
 
 // routes
