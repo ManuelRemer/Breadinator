@@ -11,10 +11,11 @@ const getAllItems = async (req, res) => {
   res.status(200).json({ items });
 };
 
-const getItem = async (req, res) => {
-  const { params } = req;
-  const item = await recipeModel.findOne({ _id: params.recipe });
-  res.status(200).json({ item });
+const getItem = async (req, res, next) => {
+  const { params, body } = req;
+  body.recipe = await recipeModel.findOne({ _id: params.recipe });
+
+  next();
 };
 
 const deleteItem = async (req, res) => {

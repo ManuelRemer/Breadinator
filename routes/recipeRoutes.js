@@ -10,7 +10,13 @@ const {
   getItem,
 } = require("../controllers/generalControllers");
 
+const getIngredients = require("../middleware/compute_ingredients_MW");
+
 router.route("/").get(getAllItems).post(addItem);
-router.route("/:recipe").get(getItem).delete(deleteItem).patch(updateItem);
+router
+  .route("/:recipe")
+  .get(getItem, getIngredients)
+  .delete(deleteItem)
+  .patch(updateItem);
 
 module.exports = router;
