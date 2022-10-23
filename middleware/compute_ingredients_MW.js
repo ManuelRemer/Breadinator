@@ -157,7 +157,9 @@ const getIngredients = (req, res, next) => {
     addSalt
   );
   const recipe = computeIngredients(flours);
-  res.status(200).json({ recipe });
+  req.body.recipe = recipe;
+  next();
+  // res.status(200).json({ recipe });
 };
 
 module.exports = getIngredients;

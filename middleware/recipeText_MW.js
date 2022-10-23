@@ -1,4 +1,6 @@
-const steps = [
+const IngredientsLists = require("../models/IngredientsLists");
+
+const textFragments = [
   {
     content:
       "All ingredients are at room temperature. Measure everything exactly.",
@@ -9,11 +11,11 @@ const steps = [
     ryeOver10speltOver30: true,
   },
   {
-    content: `Boil ${
-      ((600 * (totalRatioSpelts.ratioValue / 100)) / 100) * 25
-    } g of water and stir in ${
-      ((600 * (totalRatioSpelts.ratioValue / 100)) / 100) * 5
-    } g of the spelt flour and the Salt with a whisk. Allow the mixture to cool for at least one hour.`,
+    // content: `Boil ${
+    //   ((600 * (totalRatioSpelts.ratioValue / 100)) / 100) * 25
+    // } g of water and stir in ${
+    //   ((600 * (totalRatioSpelts.ratioValue / 100)) / 100) * 5
+    // } g of the spelt flour and the Salt with a whisk. Allow the mixture to cool for at least one hour.`,
 
     all: false,
     speltOver30: true,
@@ -120,19 +122,29 @@ const steps = [
   },
 ];
 
-const getRecipeText = () => {
-  switch (key) {
-    case totalRatioRye < 10 && totalRatioSpelt < 30:
-      console.log("first case");
-      break;
-    case totalRatioRye >= 10 && totalRatioSpelt < 30:
-      console.log("second case");
-      break;
-    case totalRatioRye >= 10 && totalRatioSpelt >= 30:
-      console.log("third case");
-      break;
-    default:
-      console.log("no match");
-      break;
-  }
+const combineTextFragments = (key) => {
+  const recipeText = textFragments
+    .filter((fragment) => fragment[key] === true)
+    .map((fragment) => fragment.content);
+  return recipeText;
 };
+
+const getRecipeText = (req, res, next) => {
+  const {
+    ingredients,
+    info: { totalRatioRye, totalRatioSpelt },
+  } = req.body.recipe;
+
+  if (totalRatioRye < 10 && totalRatioSpelt < 30) {
+    console.log("first case");
+  } else if (totalRatioRye >= 10 && totalRatioSpelt < 30) {
+    console.log("second case");
+    req.body.recipe.text = combineTextFragments("ryeOver10");
+  } else if (totalRatioRye >= 10 && totalRatioSpelt >= 30) {
+    console.log("third case");
+  }
+  console.log(req.body.recipe.text);
+  res.status(200).json(req.body.recipe);
+};
+
+module.exports = getRecipeText;
