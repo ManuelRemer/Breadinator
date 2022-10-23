@@ -78,23 +78,33 @@ const addLemonJuice = (inputObject) => {
   let output = {};
   const getRelativeQuantityOfAllFloursWith = findAllOfNameSumValues(flours);
   const totalRatioSpelt = getRelativeQuantityOfAllFloursWith("Spelt");
+  console.log({ totalRatioSpelt });
   if (totalRatioSpelt > 30) {
-    output = { ...inputObject, lemonJuice: totalRatioSpelt * 0.04 };
+    output = {
+      ...inputObject,
+      lemonJuice: totalRatioSpelt * 0.04,
+      info: { totalRatioSpelt },
+    };
   } else {
-    output = { ...inputObject };
+    output = { ...inputObject, info: { totalRatioSpelt } };
   }
   return output;
 };
 
 const addVinegar = (inputObject) => {
-  const { flours } = inputObject;
+  const { flours, info } = inputObject;
   let output = {};
   const getRelativeQuantityOfAllFloursWith = findAllOfNameSumValues(flours);
   const totalRatioRye = getRelativeQuantityOfAllFloursWith("Rye");
   if (totalRatioRye > 18) {
-    output = { ...inputObject, vinegar: 2.5 };
+    console.log({ totalRatioRye });
+    output = {
+      ...inputObject,
+      vinegar: 2.5,
+      info: { ...info, totalRatioRye },
+    };
   } else {
-    output = { ...inputObject };
+    output = { ...inputObject, info: { ...info, totalRatioRye } };
   }
   return output;
 };
@@ -109,8 +119,9 @@ const addWater = (inputObject) => {
 };
 
 const createIngredientListByAbsoluteQuantities = (inputObject) => {
+  const { info, ...ingredients } = inputObject;
   const absFlours = 585; // might be a dynamic value in future version
-  let output = {};
+  let output = { info };
   const getAbs = (input) => {
     const start = Array.isArray(input) ? input : Object.entries(input);
     start.forEach((entry) => {
@@ -121,14 +132,16 @@ const createIngredientListByAbsoluteQuantities = (inputObject) => {
       }
     });
   };
-  getAbs(inputObject);
+  getAbs(ingredients);
   return output;
 };
 
 const addSalt = (inputObject) => {
+  const { info, ...ingredients } = inputObject;
+  ingredients.salt = Object.values(ingredients).reduce(sum, 0) * 0.013;
   return {
-    ...inputObject,
-    salt: Object.values(inputObject).reduce(sum, 0) * 0.013,
+    ingredients,
+    info,
   };
 };
 
@@ -143,8 +156,8 @@ const getIngredients = (req, res, next) => {
     createIngredientListByAbsoluteQuantities,
     addSalt
   );
-  const ingredients = computeIngredients(flours);
-  res.status(200).json({ ingredients });
+  const recipe = computeIngredients(flours);
+  res.status(200).json({ recipe });
 };
 
 module.exports = getIngredients;
