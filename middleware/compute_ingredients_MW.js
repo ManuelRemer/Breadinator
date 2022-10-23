@@ -2,17 +2,17 @@ const pipe = require("../helpers/pipe");
 
 const initialFlours = [
   {
-    name: "Mehl1",
+    name: "Wheat Flour 550",
     absorbency: 0.65,
     yeast: 0.008333,
   },
   {
-    name: "Mehl2",
+    name: "Wholemeal Wheat Flour",
     absorbency: 0.7,
     yeast: 0.005,
   },
   {
-    name: "Mehl3",
+    name: "Spelt Flour 630",
     absorbency: 0.65,
     yeast: 0.005,
   },
@@ -38,8 +38,15 @@ const sum = (a, b) => {
   return a + b;
 };
 
+const findAllOfNameSumValues = (inputArray) => (fragment) => {
+  return inputArray
+    .filter((flour) => Object.keys(flour)[0].includes(fragment)) //
+    .map((flour) => Object.values(flour)[0])
+    .reduce(sum, 0);
+};
+
 // FUNCTIONS
-const computeProportionality = (floursArray) =>
+const getRatioByFlour = (floursArray) =>
   floursArray.map((flour) => {
     const ref = initialFlours.find((initial) => initial.name === flour.name);
     return {
@@ -50,12 +57,12 @@ const computeProportionality = (floursArray) =>
     };
   });
 
-const createProportionalityList = (inputArray) => {
+const createIngredientListByRatio = (inputArray) => {
   const output = {
     // flours -> percentage POINTS of total flour
     flours: [
       ...inputArray.map((flour) => {
-        return { name: flour.name, relativeAmount: flour.relativeAmount };
+        return { [flour.name]: flour.relativeAmount };
       }),
     ],
   };
@@ -67,11 +74,10 @@ const createProportionalityList = (inputArray) => {
 };
 
 const addLemonJuice = (inputObject) => {
+  const { flours } = inputObject;
   let output = {};
-  const totalRatioSpelt = inputObject.flours
-    .filter((flour) => flour.name.includes("Meh"))
-    .map((flour) => flour.relativeAmount)
-    .reduce(sum, 0);
+  const getRelativeQuantityOfAllFloursWith = findAllOfNameSumValues(flours);
+  const totalRatioSpelt = getRelativeQuantityOfAllFloursWith("Spelt");
   if (totalRatioSpelt > 30) {
     output = { ...inputObject, lemonJuice: totalRatioSpelt * 0.04 };
   } else {
@@ -81,14 +87,12 @@ const addLemonJuice = (inputObject) => {
 };
 
 const addVinegar = (inputObject) => {
+  const { flours } = inputObject;
   let output = {};
-
-  const totalRatioRye = inputObject.flours
-    .filter((flour) => flour.name.includes("Meh"))
-    .map((flour) => flour.relativeAmount)
-    .reduce(sum, 0);
-  if (totalRatioRye > 10) {
-    output = { ...inputObject, vinegar: 1.6 };
+  const getRelativeQuantityOfAllFloursWith = findAllOfNameSumValues(flours);
+  const totalRatioRye = getRelativeQuantityOfAllFloursWith("Rye");
+  if (totalRatioRye > 18) {
+    output = { ...inputObject, vinegar: 2.5 };
   } else {
     output = { ...inputObject };
   }
@@ -96,47 +100,28 @@ const addVinegar = (inputObject) => {
 };
 
 const addWater = (inputObject) => {
-  const { lemonJuice, vinegar, totalLiquids } = inputObject;
-  let output = { ...inputObject };
-  output.water = totalLiquids - lemonJuice - vinegar;
+  const { totalLiquids, ...output } = inputObject;
+  const { lemonJuice, vinegar } = output;
+
+  output.water =
+    totalLiquids - (lemonJuice ? lemonJuice : 0) - (vinegar ? vinegar : 0);
   return output;
 };
 
-const calcAbs = (inputObject) => {
-  const { flours, totalYeast: yeast, lemonJuice, water, vinegar } = inputObject;
-  const absFlours = 600; // might be a dynamic value in future version
-
+const createIngredientListByAbsoluteQuantities = (inputObject) => {
+  const absFlours = 585; // might be a dynamic value in future version
   let output = {};
-
   const getAbs = (input) => {
     const start = Array.isArray(input) ? input : Object.entries(input);
-
     start.forEach((entry) => {
       if (!Array.isArray(entry[1])) {
-        console.log(entry[0]);
         output[entry[0]] = (entry[1] * absFlours) / 100;
       } else {
-        console.log(entry[1]);
-        entry[1].forEach((entry) => {
-          output[entry.name] = (entry.relativeAmount * absFlours) / 100;
-        });
+        entry[1].forEach((entry) => getAbs(entry));
       }
     });
   };
-
   getAbs(inputObject);
-
-  // flours.forEach((flour) => {
-  //   output[flour.name] = (flour.relativeAmount * absFlours) / 100;
-  // });
-
-  // output = {
-  //   ...output,
-  //   // yeast: (yeast * absFlours) / 100,
-  //   // lemonJuice: (lemonJuice * absFlours) / 100,
-  //   // water: (water * absFlours) / 100,
-  //   // vinegar: (vinegar * absFlours) / 100,
-  // };
   return output;
 };
 
@@ -150,12 +135,12 @@ const addSalt = (inputObject) => {
 const getIngredients = (req, res, next) => {
   const { flours } = req.body.recipe;
   const computeIngredients = pipe(
-    computeProportionality,
-    createProportionalityList,
+    getRatioByFlour,
+    createIngredientListByRatio,
     addLemonJuice,
     addVinegar,
     addWater,
-    calcAbs,
+    createIngredientListByAbsoluteQuantities,
     addSalt
   );
   const ingredients = computeIngredients(flours);
