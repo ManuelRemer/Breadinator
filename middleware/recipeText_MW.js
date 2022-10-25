@@ -136,18 +136,18 @@ const textFragments = [
   },
 ];
 
-// const combineTextFragments = (key) => {
-//   const recipeText = textFragments
-//     .filter((fragment) => fragment[key] === true)
-//     .map((fragment) => fragment.content);
-//   return recipeText;
-// };
-
-const combineTextFragments = async (parameter) => {
-  const text = await TextFragments.find({ [parameter]: true });
-  const result = text.map((fragment) => fragment.content);
-  return result;
+const combineTextFragments = (key) => {
+  const recipeText = textFragments
+    .filter((fragment) => fragment[key] === true)
+    .map((fragment) => fragment.content);
+  return recipeText;
 };
+
+// const combineTextFragments = async (parameter) => {
+//   const text = await TextFragments.find({ [parameter]: true });
+//   const result = text.map((fragment) => fragment.content);
+//   return result;
+// };
 
 createText = async (recipe, totalRatioRye, totalRatioSpelt) => {
   if (totalRatioRye < 10 && totalRatioSpelt < 30) {
