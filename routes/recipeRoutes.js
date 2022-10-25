@@ -8,6 +8,7 @@ const {
   deleteItem,
   updateItem,
   getItem,
+  // uploadText,
 } = require("../controllers/generalControllers");
 
 const getIngredients = require("../middleware/compute_ingredients_MW");
@@ -18,6 +19,7 @@ router
   .route("/:recipe")
   .get(getItem, getIngredients, getRecipeText)
   .delete(deleteItem)
+  //.post(uploadText)
   .patch(updateItem);
 
 module.exports = router;

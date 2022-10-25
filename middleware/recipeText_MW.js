@@ -1,7 +1,9 @@
 const IngredientsLists = require("../models/IngredientsLists");
+const TextFragments = require("../models/TextFragments");
 
 const textFragments = [
   {
+    step: 1,
     content:
       "All ingredients are at room temperature. Measure everything exactly.",
 
@@ -11,11 +13,12 @@ const textFragments = [
     ryeOver10speltOver30: true,
   },
   {
-    // content: `Boil ${
-    //   ((600 * (totalRatioSpelts.ratioValue / 100)) / 100) * 25
-    // } g of water and stir in ${
-    //   ((600 * (totalRatioSpelts.ratioValue / 100)) / 100) * 5
-    // } g of the spelt flour and the Salt with a whisk. Allow the mixture to cool for at least one hour.`,
+    step: 2,
+    content: `Boil ${
+      ((600 * (this.totalRatioSpelt / 100)) / 100) * 25
+    } g of water and stir in ${
+      ((600 * (this.totalRatioSpelt / 100)) / 100) * 5
+    } g of the spelt flour and the Salt with a whisk. Allow the mixture to cool for at least one hour.`,
 
     all: false,
     speltOver30: true,
@@ -23,6 +26,7 @@ const textFragments = [
     ryeOver10speltOver30: true,
   },
   {
+    step: 3,
     content:
       "Dissolve the yeast in 20 g of the water, the salt in the remaining water.",
 
@@ -32,6 +36,7 @@ const textFragments = [
     ryeOver10speltOver30: false,
   },
   {
+    step: 4,
     content: "Dissolve the yeast in 20 g of the water.",
 
     all: false,
@@ -40,6 +45,7 @@ const textFragments = [
     ryeOver10speltOver30: true,
   },
   {
+    step: 5,
     content:
       "Pour the salt water into a large bowl. Add the flours. Add the yeast water last.",
 
@@ -49,6 +55,7 @@ const textFragments = [
     ryeOver10speltOver30: false,
   },
   {
+    step: 6,
     content:
       "Pour the salt water and vinegar into a large bowl. Add the flours. Add the yeast water last.",
 
@@ -58,6 +65,7 @@ const textFragments = [
     ryeOver10speltOver30: false,
   },
   {
+    step: 7,
     content:
       "Pour the water and lemon juice into a large bowl. Add flours, and roux. Add the yeast water last.",
 
@@ -67,6 +75,7 @@ const textFragments = [
     ryeOver10speltOver30: false,
   },
   {
+    step: 8,
     content:
       "Pour the water, lemon juice and vinegar into a large bowl. Add flours, and roux. Add the yeast water last.",
 
@@ -76,6 +85,7 @@ const textFragments = [
     ryeOver10speltOver30: true,
   },
   {
+    step: 9,
     content:
       "Mix everything by hand to a homogenous mass. This may take some time. The dough rests for 24 hours at room temperature.",
 
@@ -85,6 +95,7 @@ const textFragments = [
     ryeOver10speltOver30: true,
   },
   {
+    step: 10,
     content:
       "In the meantime, stretch and fold it every 8 hours. If you have time or just want to, do this more often. It'll strengthen the doughs structure. But give it time to relax, at least two ours between each stretching and folding.",
 
@@ -95,6 +106,7 @@ const textFragments = [
     expand: true,
   },
   {
+    step: 11,
     content:
       "After 24 hours of resting the dough should have doubled in volume. Now it's ready to get kneaded round. Flour your working surface and hands. Take the dough out of its bowl. It might be sticky and soft. If you have one, use a wet dough scraper for this. Grasp a part of the dough, similar to stretching and folding it. Stretch it, but gently and fold it just to the top center. Go ahead round the dough until you've stretched every part once. The goal is to tighten the doughs outer skin.",
 
@@ -104,6 +116,7 @@ const textFragments = [
     ryeOver10speltOver30: true,
   },
   {
+    step: 12,
     content:
       "The dough now matures for one hour in a floured proofing basket or in a bowl lined with a cloth, top down. In the meantime, preheat the oven to 250 °C and a cast-iron pot with it.",
 
@@ -113,6 +126,7 @@ const textFragments = [
     ryeOver10speltOver30: true,
   },
   {
+    step: 13,
     content:
       "After that drop the dough into the hot pot with the bottom facing up. Bake it in the closed pot at 230 °C for 45 min. The lid can be removed 10 minutes before the end to get a crispier crust.",
     all: true,
@@ -122,28 +136,39 @@ const textFragments = [
   },
 ];
 
-const combineTextFragments = (key) => {
-  const recipeText = textFragments
-    .filter((fragment) => fragment[key] === true)
-    .map((fragment) => fragment.content);
-  return recipeText;
+// const combineTextFragments = (key) => {
+//   const recipeText = textFragments
+//     .filter((fragment) => fragment[key] === true)
+//     .map((fragment) => fragment.content);
+//   return recipeText;
+// };
+
+const combineTextFragments = async (parameter) => {
+  const text = await TextFragments.find({ [parameter]: true });
+  const result = text.map((fragment) => fragment.content);
+  return result;
 };
 
-const getRecipeText = (req, res, next) => {
-  const {
-    ingredients,
-    info: { totalRatioRye, totalRatioSpelt },
-  } = req.body.recipe;
-
+createText = async (recipe, totalRatioRye, totalRatioSpelt) => {
   if (totalRatioRye < 10 && totalRatioSpelt < 30) {
-    console.log("first case");
+    return await combineTextFragments("all");
   } else if (totalRatioRye >= 10 && totalRatioSpelt < 30) {
-    console.log("second case");
-    req.body.recipe.text = combineTextFragments("ryeOver10");
+    return await combineTextFragments("ryeOver10");
   } else if (totalRatioRye >= 10 && totalRatioSpelt >= 30) {
-    console.log("third case");
+    return await combineTextFragments("ryeOver30speltOver30");
+  } else if (totalRatioRye < 10 && totalRatioSpelt >= 30) {
+    return await combineTextFragments("speltOver30");
   }
-  console.log(req.body.recipe.text);
+};
+
+const getRecipeText = async (req, res, next) => {
+  const {
+    recipe,
+    recipe: {
+      info: { totalRatioRye, totalRatioSpelt },
+    },
+  } = req.body;
+  recipe.text = await createText(recipe, totalRatioRye, totalRatioSpelt);
   res.status(200).json(req.body.recipe);
 };
 
