@@ -1,4 +1,4 @@
-const pipe = require("../helpers/pipe");
+const pipe = require("../../../helpers/pipe");
 
 const initialFlours = [
   {
