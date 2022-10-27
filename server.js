@@ -17,16 +17,18 @@ const router = require("./routes/recipeRoutes");
 //--------------------------------------------------------
 
 // globals
-const port = 3000;
+const port = 4000;
 
 // middleware
+
 app.use(express.json());
 
 // routes
 app.use("/api/v1", router);
 
-app.get("/hello", (req, res) => {
-  res.send("Hello World! This is the new BREADINATOR");
+app.get("/hello-world", (req, res) => {
+  console.log("DONE");
+  res.status(200).json("Hello World! This is the new BREADINATOR");
 });
 
 app.use(errorHandler);

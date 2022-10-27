@@ -9,6 +9,7 @@ const addItem = async (req, res) => {
 
 const getAllItems = async (req, res) => {
   const items = await recipeModel.find({});
+
   res.status(200).json({ items });
 };
 
