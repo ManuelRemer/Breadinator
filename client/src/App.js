@@ -1,27 +1,28 @@
 import "./App.css";
+//packages
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+//react
 import { useEffect, useState } from "react";
+//components
+import Home from "./pages/Home.js";
+import Create from "./pages/Create.js";
+import Recipes from "./pages/Recipes";
+import SingleRecipe from "./pages/SingleRecipe.js";
 
 function App() {
-  const [text, setText] = useState("");
-
-  useEffect(() => {
-    fetch("/hello-world")
-      .then((res) => res.json())
-      .then((data) => setText(data));
-  });
-
+  const { idv } = useParams();
+  console.log(idv);
   return (
     <div className="App">
-      <h1> {text} </h1>
-      <button
-        onClick={async () => {
-          const result = await fetch("/api/v1");
-          const text = await result.json();
-          console.log(text);
-        }}
-      >
-        hallo
-      </button>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element=<Home /> />
+          <Route path="create" element=<Create /> />
+          <Route path="recipes" element=<Recipes />>
+            <Route path=":idv" element=<SingleRecipe /> />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
