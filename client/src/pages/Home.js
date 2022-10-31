@@ -1,21 +1,20 @@
 //react
 import { useEffect, useState } from "react";
+import useFetch from "../hooks/useFetch";
 //Styles
 import "./Home.css";
 //
 
 function Home() {
-  const [text, setText] = useState("");
-
+  const { data, isPending } = useFetch("/hello-world", "GET");
   useEffect(() => {
-    fetch("/hello-world")
-      .then((res) => res.json())
-      .then((data) => setText(data));
-  });
+    console.log(data);
+  }, [isPending, data]);
   return (
-    <div>
-      <h1> {text} </h1>
-      <button
+    <div className="Pages">
+      <h1> Breadinator </h1>
+      <p>{data}</p>
+      {/* <button
         onClick={async () => {
           const result = await fetch("/api/v1");
           const text = await result.json();
@@ -23,7 +22,7 @@ function Home() {
         }}
       >
         hallo
-      </button>
+      </button> */}
     </div>
   );
 }

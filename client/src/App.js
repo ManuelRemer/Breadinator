@@ -11,11 +11,11 @@ import SingleRecipe from "./pages/SingleRecipe.js";
 
 function App() {
   const { idv } = useParams();
-  console.log(idv);
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
+        <Routes className="Pages">
           <Route path="/" element=<Home /> />
           <Route path="create" element=<Create /> />
           <Route path="recipes" element=<Recipes />>
