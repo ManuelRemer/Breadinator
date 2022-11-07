@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useFetch = (url, method = "GET") => {
+const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
@@ -25,7 +25,6 @@ const useFetch = (url, method = "GET") => {
         });
 
         const dataFromJson = await res.json();
-        console.log({ dataFromJson });
         if (!res.ok) {
           throw new Error(dataFromJson.msg);
         }
@@ -43,7 +42,6 @@ const useFetch = (url, method = "GET") => {
       }
     };
     if (!options) {
-      //console.log("GET");
       fetchData();
     }
     if (options) {
@@ -52,7 +50,7 @@ const useFetch = (url, method = "GET") => {
     return () => {
       controller.abort();
     };
-  }, [method, options, url]);
+  }, [options, url]);
 
   return { data, isPending, error, postData };
 };

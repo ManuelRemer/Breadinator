@@ -8,21 +8,25 @@ import Home from "./pages/Home.js";
 import Create from "./pages/Create.js";
 import Recipes from "./pages/Recipes";
 import SingleRecipe from "./pages/SingleRecipe.js";
+import Header from "./components/Header";
 
 function App() {
   const { idv } = useParams();
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes className="Pages">
-          <Route path="/" element=<Home /> />
-          <Route path="create" element=<Create /> />
-          <Route path="recipes" element=<Recipes />>
-            <Route path=":idv" element=<SingleRecipe /> />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <div className="Pages">
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element=<Home /> />
+            <Route path="create" element=<Create /> />
+            <Route path="recipes" element=<Recipes />>
+              <Route path=":idv" element=<SingleRecipe /> />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
     </div>
   );
 }

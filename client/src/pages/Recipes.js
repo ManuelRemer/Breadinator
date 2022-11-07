@@ -6,10 +6,10 @@ import "./Recipes.css";
 const Recipes = () => {
   return (
     <div>
+      Recipes
       <div>
         <Outlet />
       </div>
-      Recipes
     </div>
   );
 };

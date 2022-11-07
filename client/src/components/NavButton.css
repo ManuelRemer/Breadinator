@@ -1,0 +1,13 @@
+.navButton {
+  height: 10px;
+  background-color: brown;
+}
+
+.navButton button {
+  background-color: inherit;
+}
+
+.navButton--active {
+  height: 90px;
+  background-color: aquamarine;
+}
