@@ -15,6 +15,7 @@ const Header = () => {
           <h1>Breadinator</h1>
         </li>
         <li>
+          <NavButton route="/" text="home" end />
           {data && data.items.length > 0 && (
             <NavButton route="/recipes" text="all" />
           )}
