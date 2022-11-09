@@ -10,18 +10,7 @@ const Header = () => {
   const { data, isPending } = useFetch("/api/v1");
   return (
     <div className="Header">
-      <ul>
-        <li>
-          <h1>Breadinator</h1>
-        </li>
-        <li>
-          <NavButton route="/" text="home" end />
-          {data && data.items.length > 0 && (
-            <NavButton route="/recipes" text="all" />
-          )}
-          <NavButton route="/create" text="new" />
-        </li>
-      </ul>
+      <h1>Breadinator</h1>
     </div>
   );
 };

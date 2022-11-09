@@ -1,13 +1,18 @@
 .navButton {
-  height: 10px;
-  background-color: brown;
+  background-color: var(--color-rose);
 }
 
 .navButton button {
+  font-size: 0.8rem;
+  color: var(--color-fonts);
+  height: 1rem;
+  width: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: inherit;
 }
 
 .navButton--active {
-  height: 90px;
-  background-color: aquamarine;
+  border-bottom: solid;
 }
