@@ -1,24 +1,21 @@
 //react
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
+//Assets
 import BrotHaende from "../components/assets/BrotHaende.jpg";
 //Styles
 import "./Home.css";
-//
+//Components
+import Page from "./Page";
 
-function Home() {
-  const { data, isPending } = useFetch("/api/v1");
-
+function Home({ data }) {
   return (
-    <div className="home">
-      <img alt="different Breads" src={BrotHaende} className="ScrollImage2" />
-      <div className="welcome">
+    <Page data={data} scheme="Home" text="Breadinator">
+      <img alt="different Breads" src={BrotHaende} />
+      <div className="Home__welcomeText">
         <p>Design your own</p>
         <span className="welcome-highlight">Bread</span>
         <p>with the ingredients</p> <p>you want</p>
       </div>
-    </div>
+    </Page>
   );
 }
 

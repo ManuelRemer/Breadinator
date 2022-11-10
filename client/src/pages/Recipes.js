@@ -1,16 +1,13 @@
+//Components
+import Page from "./Page";
 //Styles
-import { Outlet } from "react-router-dom";
 import "./Recipes.css";
-//
 
-const Recipes = () => {
+const Recipes = ({ data }) => {
   return (
-    <div>
+    <Page data={data} scheme="Recipes" text="Your Recipes">
       Recipes
-      <div>
-        <Outlet />
-      </div>
-    </div>
+    </Page>
   );
 };
 

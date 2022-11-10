@@ -29,26 +29,23 @@ a {
 }
 
 button {
-  /* font-family: inherit; */
   font-family: "Work sans";
   color: var(--color-fonts);
   line-height: 1.35;
-  background: none;
-  border-radius: 4px;
-  border: 2px solid;
+  background-color: lightblue;
+  border: none;
   padding: 0.5em;
   font-size: 1rem;
   font-weight: bold;
 }
 
 .App {
-  background-color: var(--color-rose);
-  color: var(--color-fonts);
   height: 100vh;
   margin: 0;
   font-family: "Work sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
+  color: var(--color-fonts);
 }
 .Pages {
   max-width: 500px;
@@ -56,16 +53,5 @@ button {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  /* background-color: rgb(209, 182, 182); */
-}
-
-.container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   justify-content: "space-between";
-}
-
-.container div:first-child {
-  flex: 1;
 }

@@ -1,18 +1,17 @@
+//React + Router
 import { NavLink } from "react-router-dom";
-//styles
+//Styles
 import "./NavButton.css";
-import Icon from "./assets/test.js";
-import { useState } from "react";
+//Assets
+import Icon from "./assets/HomeIcon.js";
 
-const NavButton = ({ route, text, end, icon }) => {
+const NavButton = ({ route, text, end }) => {
   return (
     <div>
       <NavLink
         end={end && end}
         to={route}
-        className={({ isActive }) =>
-          isActive ? "navButton navButton--active" : "navButton"
-        }
+        className={({ isActive }) => (isActive ? "navButton--active" : "")}
       >
         {text ? text : <Icon />}
       </NavLink>
