@@ -1,31 +1,39 @@
 import { useState } from "react";
 
-const SelectButton = ({ name }) => {
+import "./selectButton.css";
+
+const SelectButton = ({ name, onChange }) => {
   const [clicked, setClicked] = useState(false);
 
   return (
-    <>
-      <button
-        key={name}
-        onClick={() => {
-          setClicked(true);
-        }}
+    <div className="SelectButtonBackground">
+      <div
+        className={
+          clicked ? "SelectButton--clicked SelectButton" : "SelectButton"
+        }
       >
-        {name}
-      </button>
-      {clicked && (
-        <>
-          <input type="text" />
-          <button
-            onClick={() => {
-              setClicked(false);
-            }}
-          >
-            x
-          </button>
-        </>
-      )}
-    </>
+        <button
+          key={name}
+          onClick={() => {
+            setClicked(!clicked);
+          }}
+        >
+          {name}
+        </button>
+        {clicked && (
+          <div>
+            <input type="text" defaultValue={0} onChange={onChange(name)} />
+            {/* <button
+              onClick={() => {
+                setClicked(false);
+              }}
+            >
+              x
+            </button> */}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

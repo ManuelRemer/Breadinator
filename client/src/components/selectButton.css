@@ -1,0 +1,25 @@
+.SelectButtonBackground {
+  display: flex;
+  justify-content: center;
+  background-color: lightblue;
+}
+
+.SelectButton {
+  display: flex;
+  justify-content: center;
+}
+
+.SelectButton--clicked {
+  max-width: 20rem;
+  flex: 1;
+  padding: 0 1.5rem;
+  justify-content: space-between;
+}
+
+.SelectButton input {
+  max-width: 3rem;
+  height: 100%;
+  border: none;
+  background-color: rgb(187, 243, 243);
+  text-align: center;
+}
