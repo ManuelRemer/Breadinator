@@ -1,0 +1,57 @@
+*,
+::before,
+::after {
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+}
+ul,
+li,
+p,
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: "Titan One", cursive;
+}
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: "Work sans";
+  color: var(--color-fonts);
+  line-height: 1.35;
+  background-color: lightblue;
+  border: none;
+  padding: 0.5em;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.App {
+  height: 100vh;
+  margin: 0;
+  font-family: "Work sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  color: var(--color-fonts);
+}
+.Pages {
+  max-width: 500px;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: "space-between";
+}
