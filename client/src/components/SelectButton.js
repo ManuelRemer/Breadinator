@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./selectButton.css";
 
-const SelectButton = ({ name, onChange }) => {
+const SelectButton = ({ name, onChange, value }) => {
   const [clicked, setClicked] = useState(false);
 
   return (
@@ -14,7 +14,8 @@ const SelectButton = ({ name, onChange }) => {
       >
         <button
           key={name}
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             setClicked(!clicked);
           }}
         >
@@ -22,7 +23,7 @@ const SelectButton = ({ name, onChange }) => {
         </button>
         {clicked && (
           <div>
-            <input type="text" defaultValue={0} onChange={onChange(name)} />
+            <input type="text" onChange={onChange(name)} value={value} />
             {/* <button
               onClick={() => {
                 setClicked(false);

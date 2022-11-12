@@ -1,5 +1,5 @@
 //Styles
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import SelectButton from "../components/SelectButton";
 import pipe from "../helpers/pipe";
 import "./Create.css";
@@ -7,65 +7,50 @@ import "./Create.css";
 import Page from "./Page";
 
 const Create = ({ data }) => {
-  const [amounts, setAmounts] = useState([]);
-  console.log({ amounts });
-  const flours = [
-    "Wheat Flour 550",
-    "Wholemeal Wheat Flour",
-    "Spelt Flour 630",
-    "Wholemeal Spelt Flour",
-    "Rye Flour 1150",
-    "Wholemeal Rye Flour",
-  ];
-
-  const onInput = (flour) => (e) => {
-    // some
-    const result = amounts.find((item) =>
-      Object.keys(item).find((key) => key === flour)
-    );
-
-    //__________
-
-    // const ArrOfObjsIncludeKey = (arr) => (keyToCheck) => {
-    //   return arr.some((item) =>
-    //     Object.keys(item).some((key) => key === keyToCheck)
-    //   );
-    // };
-
-    // const amountsIncludesFlour = ArrOfObjsIncludeKey(amounts)(flour);
-
-    // const buildNewArray = (arr) => (keyToCheck) => (amountsIncludesFlour) => {
-    //   return amountsIncludesFlour
-    //     ? arr.map((item) =>
-    //         Object.keys(item).includes(keyToCheck)
-    //           ? { [keyToCheck]: e.target.value }
-    //           : item
-    //       )
-    //     : [...arr, { [keyToCheck]: e.target.value }];
-    // };
-
-    // const buildNewAmounts = buildNewArray(amounts)(flour);
-
-    // console.log(buildNewAmounts(amountsIncludesFlour));
-
-    // const task = pipe(ArrOfObjsIncludeKey, buildNewAmounts, setAmounts);
-
-    // task(amounts, flour);
-
-    //___________
-
-    const newArray = result
-      ? amounts.map((item) =>
-          Object.keys(item).includes(flour) ? { [flour]: e.target.value } : item
-        )
-      : [...amounts, { [flour]: e.target.value }];
-
-    setAmounts(newArray);
+  const initialState = {
+    "Wheat Flour 550": 0,
+    "Wholemeal Wheat Flour": 0,
+    "Spelt Flour 630": 0,
+    "Wholemeal Spelt Flour": 0,
+    "Rye Flour 1150": 0,
+    "Wholemeal Rye Flour": 0,
   };
+
+  const flourReducer = (state, action) => {
+    switch (action.type) {
+      case action.type:
+        return { ...state, [action.type]: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(flourReducer, initialState);
+
+  const onInput = (name) => (e) => {
+    dispatch({ type: name, payload: e.target.value });
+  };
+
+  console.log({
+    flours: Object.keys(state).map((item) => {
+      return { name: item, relativeAmount: state[item] };
+    }),
+  });
+
   return (
     <Page data={data} scheme="Create" text="Create a new Recipe">
-      {flours.map((flour) => {
-        return <SelectButton name={flour} onChange={onInput} key={flour} />;
+      {Object.keys(initialState).map((flour) => {
+        console.log(initialState[flour]);
+        return (
+          <form>
+            <SelectButton
+              name={flour}
+              onChange={onInput}
+              key={flour}
+              value={state[flour]}
+            />
+          </form>
+        );
       })}
     </Page>
   );
