@@ -10,7 +10,7 @@
 }
 
 .SelectButton--clicked {
-  max-width: 20rem;
+  /* max-width: 20rem; */
   flex: 1;
   padding: 0 1.5rem;
   justify-content: space-between;

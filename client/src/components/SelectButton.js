@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./selectButton.css";
 
-const SelectButton = ({ name, onChange, value }) => {
+const SelectButton = ({ name, onChange, value, hideInput, count }) => {
   const [clicked, setClicked] = useState(false);
 
   return (
@@ -17,6 +17,7 @@ const SelectButton = ({ name, onChange, value }) => {
           onClick={(e) => {
             e.preventDefault();
             setClicked(!clicked);
+            clicked ? hideInput(name) : count(true);
           }}
         >
           {name}

@@ -1,3 +1,28 @@
 .Create {
   background-color: var(--color-blue);
 }
+
+.Create form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+/* .Create form div {
+  display: flex;
+  justify-content: space-around;
+} */
+
+.Create p {
+  font-size: 1rem;
+  line-height: 1.35;
+  padding: 0.5rem;
+}
+
+.Create input {
+  border: none;
+  background-color: rgb(187, 243, 243);
+  text-align: center;
+  height: 100%;
+}
